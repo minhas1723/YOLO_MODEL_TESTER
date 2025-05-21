@@ -76,7 +76,14 @@ yolo-detection-app/
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+We welcome contributions to improve this project! Please follow these steps:
+
+1. Check the [open issues](https://github.com/yourusername/yolo-detection-app/issues) or create a new one to discuss your ideas
+2. Fork the repository and create a branch following our naming conventions
+3. Make your changes following our code style guidelines
+4. Submit a pull request with a clear description of the changes
+
+For detailed instructions, please read our [contribution guidelines](CONTRIBUTING.md).
 
 ## License
 
