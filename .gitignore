@@ -36,7 +36,6 @@ env/
 .ipynb_checkpoints
 
 # Project specific
-*.pt
 *.weights
 *.onnx
 *.tflite

@@ -9,7 +9,7 @@ YOLO_MODEL_TESTER is a user-friendly application that allows researchers, develo
 
 ## Features
 
-- Support for multiple YOLO model variants (YOLOv5, YOLOv8, etc.)
+- Support for multiple YOLO model variants (YOLOv8, YOLOv11, etc.)
 - Image and video processing with real-time detection
 - Adjustable confidence thresholds and display options
 - Detailed detection statistics and analytics
@@ -82,14 +82,7 @@ YOLO_MODEL_TESTER/
 
 ## Contributing
 
-We welcome contributions to improve this project! Please follow these steps:
-
-1. Check the [open issues](https://github.com/minhas1723/YOLO_MODEL_TESTER/issues) or create a new one to discuss your ideas
-2. Fork the repository and create a branch following our naming conventions
-3. Make your changes following our code style guidelines
-4. Submit a pull request with a clear description of the changes
-
-For detailed instructions, please read our [contribution guidelines](CONTRIBUTING.md).
+We welcome contributions to improve this project! Please check our [contribution guidelines](CONTRIBUTING.md) for details on how to contribute.
 
 ## License
 
