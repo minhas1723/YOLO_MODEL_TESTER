@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Project specific
+*.pt
+*.weights
+*.onnx
+*.tflite
+*.mlmodel
+runs/
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.tif
+*.tiff
+!assets/*.jpg
+!assets/*.png
+
+# Logs
+logs/
+*.log
+
+# Local configuration
+.env
+config.local.yaml
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Temporary files
+temp/
+tmp/
