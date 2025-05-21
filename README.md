@@ -3,12 +3,18 @@
 
 A Streamlit-based application for object detection in images and videos using YOLO models.
 
+## About
+
+YOLO_MODEL_TESTER is a user-friendly application that allows researchers, developers, and AI enthusiasts to quickly test and visualize YOLO model performance on custom images and videos. The app automatically detects and loads any YOLO model files in your project directory, making it simple to switch between different model variants or custom-trained models.
+
 ## Features
 
-- Support for multiple YOLO model variants
-- Image and video processing
-- Adjustable confidence thresholds
-- Customizable display options
+- Support for multiple YOLO model variants (YOLOv5, YOLOv8, etc.)
+- Image and video processing with real-time detection
+- Adjustable confidence thresholds and display options
+- Detailed detection statistics and analytics
+- Video compression options for faster processing
+- Export capabilities for processed media and results
 
 ## Installation
 
@@ -16,8 +22,8 @@ This application was tested with Python 3.11. You can use conda to easily set up
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/yolo-detection-app.git
-cd yolo-detection-app
+git clone https://github.com/minhas1723/YOLO_MODEL_TESTER.git
+cd YOLO_MODEL_TESTER
 
 # Create and activate conda environment with Python 3.11
 conda create -n yolo-app python=3.11
@@ -56,7 +62,7 @@ The application automatically detects and loads any YOLO model files (`.pt`) in 
 
 Example:
 ```
-yolo-detection-app/
+YOLO_MODEL_TESTER/
 ├── models/
 │   ├── my_custom_model.pt       # Will appear as "my_custom_model" in dropdown
 │   └── specialized/
@@ -78,7 +84,7 @@ yolo-detection-app/
 
 We welcome contributions to improve this project! Please follow these steps:
 
-1. Check the [open issues](https://github.com/yourusername/yolo-detection-app/issues) or create a new one to discuss your ideas
+1. Check the [open issues](https://github.com/minhas1723/YOLO_MODEL_TESTER/issues) or create a new one to discuss your ideas
 2. Fork the repository and create a branch following our naming conventions
 3. Make your changes following our code style guidelines
 4. Submit a pull request with a clear description of the changes
