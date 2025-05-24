@@ -6,7 +6,7 @@ import streamlit as st
 from stqdm import stqdm
 import subprocess
 
-def process_video(video_path, model, conf_threshold, show_labels, show_conf, process_every_nth_frame=1):
+def process_video(video_path, model, conf_threshold, show_labels, show_conf, process_every_nth_frame=1, batch_size=1):
     """
     Process video file with object detection
     
@@ -17,6 +17,7 @@ def process_video(video_path, model, conf_threshold, show_labels, show_conf, pro
         show_labels: Whether to show labels
         show_conf: Whether to show confidence scores
         process_every_nth_frame: Process every Nth frame to speed up inference
+        batch_size: Number of frames to process in a batch (for GPU acceleration)
         
     Returns:
         tuple: (output_path, detection_stats)
@@ -55,6 +56,19 @@ def process_video(video_path, model, conf_threshold, show_labels, show_conf, pro
     frame_count = 0
     last_result = None
     
+    # Check if model is using half precision
+    is_half_precision = False
+    if hasattr(model, 'model'):
+        if hasattr(model.model, 'fp16'):
+            is_half_precision = model.model.fp16
+        # Check if any parameter is in half precision
+        elif next(model.model.parameters()).dtype == torch.float16:
+            is_half_precision = True
+    
+    # If using half precision, ensure the model knows it
+    if is_half_precision and hasattr(model, 'model'):
+        model.model.fp16 = True
+    
     # Check if processing should continue (for stop button functionality)
     while cap.isOpened() and st.session_state.get('processing', True):
         ret, frame = cap.read()
@@ -64,8 +78,14 @@ def process_video(video_path, model, conf_threshold, show_labels, show_conf, pro
         # Only process every Nth frame to speed up inference
         if frame_count % process_every_nth_frame == 0:
             try:
-                # Run detection on the frame
-                results = model(frame, conf=conf_threshold)
+                # Run detection on the frame with appropriate precision
+                if is_half_precision:
+                    # For half precision models, explicitly set half=True
+                    results = model(frame, conf=conf_threshold, half=True)
+                else:
+                    # For full precision models
+                    results = model(frame, conf=conf_threshold)
+                
                 last_result = results[0]  # Store the result for reuse
                 
                 # Collect detection stats

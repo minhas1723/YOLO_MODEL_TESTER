@@ -3,6 +3,7 @@ import streamlit as st
 import os
 import glob
 from ultralytics import YOLO
+import torch
 
 def get_available_models():
     """
@@ -25,17 +26,52 @@ def get_available_models():
     
     return models_dict
 
+def get_available_devices():
+    """
+    Get available devices for inference
+    
+    Returns:
+        list: List of available devices
+    """
+    devices = ["cpu"]
+    if torch.cuda.is_available():
+        for i in range(torch.cuda.device_count()):
+            devices.append(f"cuda:{i}")
+    return devices
+
+def warmup_gpu(model):
+    """
+    Run a warmup inference to initialize GPU memory
+    
+    Args:
+        model: YOLO model
+    """
+    if hasattr(model, 'device') and 'cuda' in str(model.device):
+        import numpy as np
+        # Create a dummy image (3 channels, 640x640)
+        dummy_input = np.zeros((640, 640, 3), dtype=np.uint8)
+        # Run inference to warm up GPU
+        with torch.no_grad():
+            model(dummy_input)
+
 # Load the model
 @st.cache_resource
-def load_model(model_path):
+def load_model(model_path, device='cpu'):
     """
     Load a YOLO model with caching
     
     Args:
         model_path: Path to the model file
+        device: Device to run inference on ('cpu', 'cuda:0', etc.)
         
     Returns:
         YOLO: Loaded model
     """
-    return YOLO(model_path)
+    # Load model in full precision first
+    model = YOLO(model_path).to(device)
+    
+    # Run a warmup inference in full precision
+    warmup_gpu(model)
+    
+    return model
 
