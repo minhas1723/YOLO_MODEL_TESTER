@@ -3,6 +3,8 @@ import time
 import os
 import tempfile
 from io import BytesIO
+import numpy as np
+import torch
 
 # Import from our modules
 from src.video_compression import compress_video

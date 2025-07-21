@@ -4,6 +4,8 @@ import os
 import cv2
 import pandas as pd
 from PIL import Image
+import torch
+import numpy as np
 
 def process_image(model, conf_threshold, show_labels, show_conf):
     """
@@ -38,7 +40,7 @@ def process_image(model, conf_threshold, show_labels, show_conf):
             cv_image = cv2.imread(img_path)
             # Convert to RGB for the model
             rgb_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
-            # Run detection
+            # Run detection with appropriate precision
             results = model(rgb_image, conf=conf_threshold)
         
         # Display results

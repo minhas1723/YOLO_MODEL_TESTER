@@ -68,3 +68,4 @@ config.local.yaml
 # Temporary files
 temp/
 tmp/
+.cursorignore

@@ -3,6 +3,7 @@ from src.utils import get_available_models, load_model, get_available_devices
 from src.image_processing import process_image
 from src.video_processing import process_video_file
 import torch
+import numpy as np
 
 # Set page config
 st.set_page_config(page_title="Object Detection", layout="wide")
@@ -37,49 +38,21 @@ with st.sidebar:
         options=available_devices,
         index=0,
         help="Select GPU (CUDA) for faster inference if available"
-    )
+    ) or "cpu"
     
     # Add GPU memory info if GPU is selected
-    if "cuda" in selected_device and torch.cuda.is_available():
+    if selected_device and "cuda" in selected_device and torch.cuda.is_available():
         gpu_id = int(selected_device.split(":")[-1])
         total_mem = torch.cuda.get_device_properties(gpu_id).total_memory / 1024**3
         used_mem = torch.cuda.memory_allocated(gpu_id) / 1024**3
         st.info(f"GPU Memory: {used_mem:.2f}GB used / {total_mem:.2f}GB total")
     
     # In the sidebar, when GPU is selected
-    if "cuda" in selected_device:
-        use_half_precision = st.checkbox(
-            "Use half precision (FP16)", 
-            value=True,
-            help="Faster inference with slightly lower precision"
-        )
-        
-        # Update model loading
+    if selected_device and "cuda" in selected_device:
         with st.spinner("Loading model..."):
             try:
-                model = load_model(model_path, device=selected_device)
-                
-                # Handle half precision
-                if use_half_precision:
-                    # Convert model to half precision
-                    if hasattr(model, 'model'):
-                        model.model.half()
-                        # Set a flag to indicate half precision is being used
-                        model.model.fp16 = True
-                        
-                        # Force a small inference to ensure model is properly converted
-                        import numpy as np
-                        dummy = np.zeros((100, 100, 3), dtype=np.uint8)
-                        with torch.no_grad():
-                            model(dummy, half=True)
-                else:
-                    # Ensure model is in full precision
-                    if hasattr(model, 'model'):
-                        # Set flag to indicate full precision
-                        model.model.fp16 = False
-                
-                st.success(f"Model loaded successfully on {selected_device}" + 
-                          (" with half precision" if use_half_precision else ""))
+                model = load_model(str(model_path), device=str(selected_device))
+                st.success(f"Model loaded successfully on {selected_device}")
             except Exception as e:
                 st.error(f"Error loading model: {e}")
                 st.stop()
@@ -87,7 +60,7 @@ with st.sidebar:
         # CPU model loading
         with st.spinner("Loading model..."):
             try:
-                model = load_model(model_path, device=selected_device)
+                model = load_model(str(model_path), device=str(selected_device))
                 st.success(f"Model loaded successfully on {selected_device}")
             except Exception as e:
                 st.error(f"Error loading model: {e}")

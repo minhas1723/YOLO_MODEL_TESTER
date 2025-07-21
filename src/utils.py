@@ -1,4 +1,3 @@
-
 import streamlit as st
 import os
 import glob
@@ -69,6 +68,10 @@ def load_model(model_path, device='cpu'):
     """
     # Load model in full precision first
     model = YOLO(model_path).to(device)
+    
+    # Ensure model is in full precision (float32) regardless of how it was saved
+    if hasattr(model, 'model') and model.model is not None and not isinstance(model.model, str) and hasattr(model.model, 'float'):
+        model.model.float()
     
     # Run a warmup inference in full precision
     warmup_gpu(model)

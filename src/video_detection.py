@@ -5,6 +5,8 @@ import pandas as pd
 import streamlit as st
 from stqdm import stqdm
 import subprocess
+import torch
+import numpy as np
 
 def process_video(video_path, model, conf_threshold, show_labels, show_conf, process_every_nth_frame=1, batch_size=1):
     """
@@ -57,17 +59,16 @@ def process_video(video_path, model, conf_threshold, show_labels, show_conf, pro
     last_result = None
     
     # Check if model is using half precision
-    is_half_precision = False
-    if hasattr(model, 'model'):
-        if hasattr(model.model, 'fp16'):
-            is_half_precision = model.model.fp16
-        # Check if any parameter is in half precision
-        elif next(model.model.parameters()).dtype == torch.float16:
-            is_half_precision = True
-    
-    # If using half precision, ensure the model knows it
-    if is_half_precision and hasattr(model, 'model'):
-        model.model.fp16 = True
+    # is_half_precision = False
+    # if hasattr(model, 'model'):
+    #     if hasattr(model.model, 'fp16'):
+    #         is_half_precision = model.model.fp16
+    #     # Check if any parameter is in half precision
+    #     elif next(model.model.parameters()).dtype == torch.float16:
+    #         is_half_precision = True
+    # # If using half precision, ensure the model knows it
+    # if is_half_precision and hasattr(model, 'model'):
+    #     model.model.fp16 = True
     
     # Check if processing should continue (for stop button functionality)
     while cap.isOpened() and st.session_state.get('processing', True):
@@ -79,12 +80,7 @@ def process_video(video_path, model, conf_threshold, show_labels, show_conf, pro
         if frame_count % process_every_nth_frame == 0:
             try:
                 # Run detection on the frame with appropriate precision
-                if is_half_precision:
-                    # For half precision models, explicitly set half=True
-                    results = model(frame, conf=conf_threshold, half=True)
-                else:
-                    # For full precision models
-                    results = model(frame, conf=conf_threshold)
+                results = model(frame, conf=conf_threshold)
                 
                 last_result = results[0]  # Store the result for reuse
                 
