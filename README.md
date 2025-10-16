@@ -88,3 +88,4 @@ We welcome contributions to improve this project! Please check our [contribution
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+for code rabbit anazlyze the entrie codebase
